@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITRE F3 Matrix - Sicredi</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PapaParse for CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo-container" style="display: flex; align-items: center;">
+                <img src="logo.png" alt="Logo Sicredi" style="height: 38px; width: auto; margin-right: 15px; border-radius: 50%;">
+                <div class="logo-icon">F3</div>
+                <h1>Fight Fraud Framework</h1>
+            </div>
+            <p class="subtitle">Explorador Interativo de Matriz de Fraudes - Time de Prevenção a Fraudes - Sicredi</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="loading-state" id="loading">
+            <div class="spinner"></div>
+            <p>Carregando matriz de dados...</p>
+        </div>
+        
+        <div class="matrix-wrapper">
+            <div class="matrix-scroll-container" id="matrix-container">
+                <!-- Columns will be generated here by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Side Panel for Technique Details -->
+    <div class="side-panel-overlay" id="panel-overlay"></div>
+    <aside class="side-panel" id="detail-panel">
+        <div class="panel-header">
+            <h2 id="detail-title">Nome da Técnica</h2>
+            <button class="close-btn" id="close-panel">&times;</button>
+        </div>
+        <div class="panel-content">
+            <div class="tag-group">
+                <span class="tag tag-id" id="detail-id">ID</span>
+                <span class="tag tag-tactic" id="detail-tactic">Tática</span>
+            </div>
+            
+            <h3>Descrição</h3>
+            <p id="detail-description">Descrição detalhada aqui.</p>
+            
+            <div id="detail-parent-container" style="display: none;">
+                <h3>Técnica Pai</h3>
+                <p id="detail-parent">Nenhuma</p>
+            </div>
+
+            <div id="detail-platforms-container" style="display: none;">
+                <h3>Plataformas</h3>
+                <p id="detail-platforms">Nenhuma</p>
+            </div>
+            
+            <div id="detail-sources-container" style="display: none;">
+                <h3>Fontes e Referências</h3>
+                <ul id="detail-sources" class="sources-list">
+                    <!-- Sources will be listed here -->
+                </ul>
+                <p style="margin-top: 15px; font-size: 0.85em; color: #666;">
+                    Last Modified: 23/06/2026<br>
+                    Version: v1.1
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Custom JS -->
+    <script src="app.js"></script>
+</body>
+</html>

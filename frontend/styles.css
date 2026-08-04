@@ -1,0 +1,426 @@
+:root {
+    /* Sicredi Brand Colors */
+    --sicredi-green: #3FA110;
+    --sicredi-dark-green: #146E37;
+    --sicredi-light-green: #E8F5E9; /* subtle background tint */
+    --sicredi-yellow: #FFB81C;
+    
+    /* Neutral Colors */
+    --bg-color: #F8F9FA;
+    --surface-color: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-secondary: #5F6368;
+    --border-color: #E0E0E0;
+    
+    /* Layout */
+    --header-height: 80px;
+    --column-width: 215px;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --box-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* Header */
+.app-header {
+    background: linear-gradient(135deg, var(--sicredi-dark-green) 0%, var(--sicredi-green) 100%);
+    color: white;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    background-color: white;
+    color: var(--sicredi-dark-green);
+    font-weight: 800;
+    font-size: 1.2rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.logo-container h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* Main Container */
+.container {
+    max-width: 100%;
+    padding: 2rem;
+    height: calc(100vh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+}
+
+/* Loading State */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 1rem;
+    color: var(--text-secondary);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--sicredi-green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Matrix Layout */
+.matrix-wrapper {
+    flex: 1;
+    overflow: hidden;
+    display: none; /* hidden until loaded */
+    position: relative;
+    background: var(--bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.matrix-scroll-container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(var(--column-width), 1fr);
+    background-color: var(--border-color);
+    gap: 2px;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.tactic-column {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+}
+
+.tactic-header {
+    background-color: var(--surface-color);
+    padding: 1rem;
+    border-bottom: 2px solid var(--sicredi-green);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    text-align: center;
+}
+
+.tactic-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.tactic-id {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.tactic-count {
+    display: inline-block;
+    background-color: var(--sicredi-light-green);
+    color: var(--sicredi-dark-green);
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+.techniques-list {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Technique Card */
+.technique-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-left-width: 3px;
+    border-left-color: transparent;
+    border-radius: 6px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+.technique-card:hover {
+    border-left-color: var(--sicredi-green);
+    box-shadow: var(--box-shadow);
+    transform: translateY(-2px);
+}
+
+.technique-card.has-subtechniques {
+    border-right-width: 3px;
+    border-right-color: var(--sicredi-yellow);
+}
+
+.technique-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.technique-id {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-top: 0.3rem;
+    display: block;
+}
+
+/* Subtechnique Card */
+.subtechnique-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.6rem 0.6rem 0.6rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    margin-top: -0.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+.subtechnique-card::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: -5px;
+    bottom: 50%;
+    width: 1px;
+    background-color: var(--border-color);
+}
+.subtechnique-card::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: 8px;
+    height: 1px;
+    background-color: var(--border-color);
+}
+
+.subtechnique-card:hover {
+    background-color: var(--sicredi-light-green);
+    border-color: var(--sicredi-green);
+}
+
+.subtechnique-name {
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+/* Side Panel */
+.side-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.side-panel-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.side-panel {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 450px;
+    height: 100vh;
+    background-color: var(--surface-color);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-panel.active {
+    right: 0;
+}
+
+.panel-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: var(--sicredi-dark-green);
+    color: white;
+}
+
+.panel-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-right: 1rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    opacity: 1;
+}
+
+.panel-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.tag-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.tag-id {
+    background-color: var(--bg-color);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.tag-tactic {
+    background-color: var(--sicredi-light-green);
+    color: var(--sicredi-dark-green);
+}
+
+.panel-content h3 {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.panel-content h3:first-of-type {
+    margin-top: 0;
+}
+
+.panel-content p {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    white-space: pre-line;
+    margin-bottom: 1.5rem;
+}
+
+.sources-list {
+    list-style: none;
+}
+
+.sources-list li {
+    margin-bottom: 0.5rem;
+}
+
+.sources-list a {
+    color: var(--sicredi-green);
+    text-decoration: none;
+    font-size: 0.9rem;
+    word-break: break-all;
+}
+
+.sources-list a:hover {
+    text-decoration: underline;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color); 
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
