@@ -1,12 +1,28 @@
-'''
 import csv
 import time
 import sys
 import urllib.request
 import urllib.parse
 import json
+import sqlite3
+import os
 
 sys.stdout.reconfigure(encoding='utf-8')
+
+# Connect to database
+db_path = os.path.join('backend', 'database.sqlite')
+conn = sqlite3.connect(db_path)
+cursor = conn.cursor()
+
+# Ensure translations table exists
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS translations (
+        technique_id TEXT PRIMARY KEY,
+        description_pt TEXT NOT NULL,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+''')
+conn.commit()
 
 input_file = 'f3_matrix_export.csv'
 output_file = 'f3_matrix_export.csv'
@@ -15,7 +31,6 @@ print("Reading CSV...", flush=True)
 rows = []
 with open(input_file, 'r', encoding='utf-8-sig') as f:
     reader = csv.DictReader(f)
-    fieldnames = reader.fieldnames
     for row in reader:
         rows.append(row)
 
@@ -33,7 +48,16 @@ def is_english(text):
 print(f"Translating missing descriptions...", flush=True)
 for i, row in enumerate(rows):
     desc = row.get('description', '')
-    if desc and is_english(desc):
+    tech_id = row.get('technique_id')
+    
+    if not desc or not tech_id:
+        continue
+        
+    # Check if translation exists in DB
+    cursor.execute('SELECT 1 FROM translations WHERE technique_id = ?', (tech_id,))
+    exists = cursor.fetchone()
+    
+    if not exists:
         desc = desc.replace('\u2011', '-')
         
         success = False
@@ -49,23 +73,22 @@ for i, row in enumerate(rows):
                 desc_pt = desc_pt.replace('atores fraudulentos', 'fraudadores')
                 desc_pt = desc_pt.replace('Atores fraudulentos', 'Fraudadores')
                 
-                row['description'] = desc_pt
-                print(f"[{i+1}/{len(rows)}] Translated: {row['technique_id']}", flush=True)
+                # Insert into DB
+                cursor.execute('''
+                    INSERT INTO translations (technique_id, description_pt)
+                    VALUES (?, ?)
+                ''', (tech_id, desc_pt))
+                conn.commit()
+                
+                print(f"[{i+1}/{len(rows)}] Translated and saved: {tech_id}", flush=True)
                 success = True
             except Exception as e:
                 retries -= 1
-                print(f"[{i+1}/{len(rows)}] Retry {3-retries} for {row['technique_id']}: {e}", flush=True)
+                print(f"[{i+1}/{len(rows)}] Retry {3-retries} for {tech_id}: {e}", flush=True)
                 time.sleep(2)
         
         time.sleep(1)
-        
-        with open(output_file, 'w', encoding='utf-8-sig', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
-            writer.writeheader()
-            writer.writerows(rows)
 
-print("Writing to CSV to frontend...", flush=True)
-import shutil
-shutil.copyfile(output_file, 'frontend/f3_matrix_export.csv')
+conn.close()
+        
 print("Done!", flush=True)
-'''

@@ -33,6 +33,25 @@
             <div class="spinner"></div>
             <p>Carregando matriz de dados...</p>
         </div>
+        <div class="filter-bar" id="filter-bar" style="display: none;">
+            <div class="filter-group">
+                <label for="status-filter"><strong>Filtrar por status:</strong></label>
+                <select id="status-filter" class="filter-select">
+                    <option value="todos">Mostrar Todos</option>
+                    <option value="aderente">🟢 Aderente</option>
+                    <option value="parcial">🟡 Parcialmente aderente</option>
+                    <option value="nao_aderente">🔴 Não aderente</option>
+                    <option value="implantacao">🔵 Em implantação</option>
+                    <option value="nao_aplicavel">⚪ Não aplicável</option>
+                    <option value="nao_avaliado">Não Avaliado</option>
+                </select>
+            </div>
+            <div class="language-toggle">
+                <strong>Idioma:</strong>
+                <button id="lang-eng" class="lang-btn active">🇺🇸 ENG</button>
+                <button id="lang-pt" class="lang-btn">🇧🇷 PT-BR</button>
+            </div>
+        </div>
         
         <div class="matrix-wrapper">
             <div class="matrix-scroll-container" id="matrix-container">
@@ -54,8 +73,27 @@
                 <span class="tag tag-tactic" id="detail-tactic">Tática</span>
             </div>
             
+            <div class="adherence-container">
+                <h3>Status de Aderência</h3>
+                <select id="detail-adherence" class="adherence-select">
+                    <option value="nao_avaliado">Não Avaliado</option>
+                    <option value="aderente">🟢 Aderente</option>
+                    <option value="parcial">🟡 Parcialmente aderente</option>
+                    <option value="nao_aderente">🔴 Não aderente</option>
+                    <option value="implantacao">🔵 Em implantação</option>
+                    <option value="nao_aplicavel">⚪ Não aplicável</option>
+                </select>
+                <span id="adherence-save-feedback" class="save-feedback"></span>
+            </div>
+            
             <h3>Descrição</h3>
-            <p id="detail-description">Descrição detalhada aqui.</p>
+            <div id="description-eng-container">
+                <p id="detail-description">Descrição detalhada aqui.</p>
+            </div>
+            
+            <div id="description-pt-container" style="display: none;">
+                <p id="detail-description-pt">Nenhuma tradução disponível.</p>
+            </div>
             
             <div id="detail-parent-container" style="display: none;">
                 <h3>Técnica Pai</h3>

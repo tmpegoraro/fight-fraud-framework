@@ -424,3 +424,148 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8; 
 }
+
+/* Adherence Styles */
+.filter-bar {
+    background-color: var(--surface-color);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.language-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-btn {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.lang-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.filter-select {
+    width: auto;
+    min-width: 250px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background-color: white;
+    margin-bottom: 0;
+}
+
+.adherence-container {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.translation-textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    margin-bottom: 0.5rem;
+}
+
+.translation-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.save-translation-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.save-translation-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.adherence-container h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.adherence-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.save-feedback {
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: block;
+}
+
+/* Status Cards Styling */
+.technique-card.status-aderente, .subtechnique-card.status-aderente {
+    border-left-color: #22c55e; /* green */
+    background-color: #f0fdf4;
+}
+
+.technique-card.status-parcial, .subtechnique-card.status-parcial {
+    border-left-color: #eab308; /* yellow */
+    background-color: #fefce8;
+}
+
+.technique-card.status-nao_aderente, .subtechnique-card.status-nao_aderente {
+    border-left-color: #ef4444; /* red */
+    background-color: #fef2f2;
+}
+
+.technique-card.status-implantacao, .subtechnique-card.status-implantacao {
+    border-left-color: #3b82f6; /* blue */
+    background-color: #eff6ff;
+}
+
+.technique-card.status-nao_aplicavel, .subtechnique-card.status-nao_aplicavel {
+    border-left-color: #94a3b8; /* gray */
+    background-color: #f8fafc;
+    opacity: 0.8;
+}
+
+.technique-card.status-nao_avaliado, .subtechnique-card.status-nao_avaliado {
+    /* Default */
+}

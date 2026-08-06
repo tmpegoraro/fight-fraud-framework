@@ -19,27 +19,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailPlatforms = document.getElementById('detail-platforms');
     const detailSourcesContainer = document.getElementById('detail-sources-container');
     const detailSources = document.getElementById('detail-sources');
+    const detailAdherence = document.getElementById('detail-adherence');
+    const adherenceFeedback = document.getElementById('adherence-save-feedback');
+    const statusFilter = document.getElementById('status-filter');
+    const filterBar = document.getElementById('filter-bar');
+    
+    // Translation Elements
+    const langEngBtn = document.getElementById('lang-eng');
+    const langPtBtn = document.getElementById('lang-pt');
+    const descriptionEngContainer = document.getElementById('description-eng-container');
+    const descriptionPtContainer = document.getElementById('description-pt-container');
+    const descPtReadonly = document.getElementById('detail-description-pt');
+    
+    let currentDetailItem = null;
+    let currentDetailTactic = null;
+    let currentStatusFilter = 'todos';
+    let currentLanguage = 'ENG';
 
     // Data Storage
     let tacticsMap = new Map(); // id -> { id, name, items: [] }
     let techniquesMap = new Map(); // tech_id -> item_data
+    let adherenceMap = new Map(); // tech_id -> status
+    let translationsMap = new Map(); // tech_id -> description_pt
 
     // 1. Fetch and Parse CSV
     Papa.parse('f3_matrix_export.csv', {
         download: true,
         header: true,
         skipEmptyLines: true,
-        complete: function(results) {
+        complete: async function(results) {
+            await Promise.all([fetchAdherence(), fetchTranslations()]);
             processData(results.data);
             renderMatrix();
             loadingEl.style.display = 'none';
             matrixWrapper.style.display = 'block';
+            filterBar.style.display = 'flex';
         },
         error: function(error) {
             console.error("Error parsing CSV:", error);
             loadingEl.innerHTML = `<p style="color:red">Erro ao carregar dados: ${error.message}</p>`;
         }
     });
+
+    async function fetchAdherence() {
+        try {
+            const response = await fetch('/api/adherence');
+            const data = await response.json();
+            for (const [key, status] of Object.entries(data)) {
+                adherenceMap.set(key, status);
+            }
+        } catch (error) {
+            console.error("Error fetching adherence:", error);
+        }
+    }
+
+    async function fetchTranslations() {
+        try {
+            const response = await fetch('/api/translations');
+            const data = await response.json();
+            for (const [techId, descPt] of Object.entries(data)) {
+                translationsMap.set(techId, descPt);
+            }
+        } catch (error) {
+            console.error("Error fetching translations:", error);
+        }
+    }
 
     // 2. Process Data
     function processData(data) {
@@ -126,6 +170,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         tacticsList.forEach(tactic => {
+            const filteredItems = tactic.items.filter(item => {
+                const key = `${tactic.id}_${item.technique_id}`;
+                const status = adherenceMap.get(key) || 'nao_avaliado';
+                return currentStatusFilter === 'todos' || status === currentStatusFilter;
+            });
+
+            if (filteredItems.length === 0) return; // Oculta a coluna se não houver itens correspondentes
+            
             const col = document.createElement('div');
             col.className = 'tactic-column';
             
@@ -135,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             header.innerHTML = `
                 <div class="tactic-name">${tactic.name}</div>
                 <div class="tactic-id">${tactic.id}</div>
-                <div class="tactic-count">${tactic.items.length} técnicas</div>
+                <div class="tactic-count">${filteredItems.length} técnicas</div>
             `;
             col.appendChild(header);
             
@@ -143,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const list = document.createElement('div');
             list.className = 'techniques-list';
             
-            tactic.items.forEach(item => {
+            filteredItems.forEach(item => {
                 const isSub = !!item.parent_technique_id;
                 const card = document.createElement('div');
                 card.className = isSub ? 'subtechnique-card' : 'technique-card';
@@ -154,12 +206,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (hasSubs) card.classList.add('has-subtechniques');
                 }
 
+                const key = `${tactic.id}_${item.technique_id}`;
+                const status = adherenceMap.get(key) || 'nao_avaliado';
+                card.classList.add(`status-${status}`);
+
                 card.innerHTML = `
                     <div class="${isSub ? 'subtechnique-name' : 'technique-name'}">${item.technique_name}</div>
                     <div class="technique-id">${item.technique_id}</div>
                 `;
                 
-                card.addEventListener('click', () => openDetailPanel(item));
+                card.addEventListener('click', () => openDetailPanel(tactic, item));
                 list.appendChild(card);
             });
             
@@ -169,12 +225,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 4. Panel Interactions
-    function openDetailPanel(item) {
+    function openDetailPanel(tactic, item) {
+        currentDetailItem = item;
+        currentDetailTactic = tactic;
         detailTitle.textContent = item.technique_name;
         detailId.textContent = item.technique_id;
-        detailTactic.textContent = item.tactic_name || 'Desconhecido';
+        detailTactic.textContent = tactic.name || 'Desconhecido';
+        
+        const key = `${tactic.id}_${item.technique_id}`;
+        detailAdherence.value = adherenceMap.get(key) || 'nao_avaliado';
+        adherenceFeedback.textContent = '';
         
         detailDescription.textContent = item.description || 'Nenhuma descrição fornecida.';
+        
+        // Handle Translation view
+        const ptText = translationsMap.get(item.technique_id) || '';
+        descPtReadonly.textContent = ptText || item.description || 'Nenhuma descrição fornecida.';
+        
+        updateLanguageView();
         
         // Parent Technique
         if (item.parent_technique_id) {
@@ -219,4 +287,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closePanelBtn.addEventListener('click', closePanel);
     panelOverlay.addEventListener('click', closePanel);
+
+    detailAdherence.addEventListener('change', async (e) => {
+        if (!currentDetailItem || !currentDetailTactic) return;
+        const newStatus = e.target.value;
+        const techId = currentDetailItem.technique_id;
+        const tacticId = currentDetailTactic.id;
+        const key = `${tacticId}_${techId}`;
+        
+        adherenceFeedback.textContent = 'Salvando...';
+        adherenceFeedback.style.color = '#666';
+
+        try {
+            const response = await fetch('/api/adherence', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tactic_id: tacticId, technique_id: techId, status: newStatus })
+            });
+
+            if (response.ok) {
+                adherenceMap.set(key, newStatus);
+                adherenceFeedback.textContent = 'Salvo!';
+                adherenceFeedback.style.color = 'green';
+                renderMatrix(); // update colors and potentially filter
+                setTimeout(() => { adherenceFeedback.textContent = ''; }, 2000);
+            } else {
+                adherenceFeedback.textContent = 'Erro ao salvar';
+                adherenceFeedback.style.color = 'red';
+            }
+        } catch (error) {
+            console.error("Save error:", error);
+            adherenceFeedback.textContent = 'Erro de conexão';
+            adherenceFeedback.style.color = 'red';
+        }
+    });
+
+    statusFilter.addEventListener('change', (e) => {
+        currentStatusFilter = e.target.value;
+        renderMatrix();
+    });
+
+    // Language Toggle Logic
+    function updateLanguageView() {
+        if (currentLanguage === 'ENG') {
+            langEngBtn.classList.add('active');
+            langPtBtn.classList.remove('active');
+            descriptionEngContainer.style.display = 'block';
+            descriptionPtContainer.style.display = 'none';
+        } else {
+            langEngBtn.classList.remove('active');
+            langPtBtn.classList.add('active');
+            descriptionEngContainer.style.display = 'none';
+            descriptionPtContainer.style.display = 'block';
+        }
+    }
+
+    langEngBtn.addEventListener('click', () => {
+        currentLanguage = 'ENG';
+        updateLanguageView();
+    });
+
+    langPtBtn.addEventListener('click', () => {
+        currentLanguage = 'PT-BR';
+        updateLanguageView();
+    });
 });
