@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailAdherence = document.getElementById('detail-adherence');
     const adherenceFeedback = document.getElementById('adherence-save-feedback');
     const statusFilter = document.getElementById('status-filter');
+    const teamFilter = document.getElementById('team-filter');
     const filterBar = document.getElementById('filter-bar');
     
     // Translation Elements
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentDetailItem = null;
     let currentDetailTactic = null;
     let currentStatusFilter = 'todos';
+    let currentTeamFilter = 'todos';
     let currentLanguage = 'ENG';
 
     // Data Storage
@@ -179,7 +181,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const key = `${tactic.id}_${item.technique_id}`;
                 const adData = adherenceMap.get(key) || {};
                 const status = adData.status || 'nao_avaliado';
-                return currentStatusFilter === 'todos' || status === currentStatusFilter;
+                const teamsStr = adData.teams || '';
+                
+                const matchStatus = currentStatusFilter === 'todos' || status === currentStatusFilter;
+                const matchTeam = currentTeamFilter === 'todos' || teamsStr.includes(currentTeamFilter);
+                
+                return matchStatus && matchTeam;
             });
 
             if (filteredItems.length === 0) return; // Oculta a coluna se não houver itens correspondentes
@@ -346,6 +353,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     statusFilter.addEventListener('change', (e) => {
         currentStatusFilter = e.target.value;
+        renderMatrix();
+    });
+
+    teamFilter.addEventListener('change', (e) => {
+        currentTeamFilter = e.target.value;
         renderMatrix();
     });
 

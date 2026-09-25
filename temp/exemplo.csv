@@ -1,0 +1,151 @@
+﻿Technique ID;Technique;Tactic ID;Tactic Name;Cobertura;Time
+F1001;3DS Bypass;TA0005;Stealth;Aderente;Cartões
+F1002;Abuse of Public-Facing API;TA0001, TA0002, FA0001;Initial Access, Execution, Positioning;Parcialmente aderente;Canais
+F1002.001;Abuse of Public-Facing API: Mobile API Abuse;TA0001, TA0002, FA0001;Initial Access, Execution, Positioning;Parcialmente aderente;Canais
+F1002.002;Abuse of Public-Facing API: Web API Abuse;TA0001, TA0002, FA0001;Initial Access, Execution, Positioning;Parcialmente aderente;Canais
+F1003;Abuse SMS verification;TA0002;Execution;Aderente;Canais
+F1004;Access with Stolen Session Cookie;TA0001;Initial Access;Parcialmente aderente;Canais
+F1005;Account Manipulation;FA0001, TA0112;Positioning, Defense Impairment;Parcialmente aderente;Canais
+F1005.001;Account Manipulation: Account Linking;FA0001, TA0112;Positioning, Defense Impairment;Parcialmente aderente;Canais
+F1005.002;Account Manipulation: Add Authorized User;FA0001, TA0112;Positioning, Defense Impairment;Parcialmente aderente;Canais
+F1005.003;Account Manipulation: Add Beneficiary;FA0001, TA0112;Positioning, Defense Impairment;Parcialmente aderente;Canais
+F1005.004;Account Manipulation: Change Account Details;FA0001, TA0112;Positioning, Defense Impairment;Parcialmente aderente;Canais
+F1005.005;Account Manipulation: Change E-Delivery or Notification Settings;FA0001, TA0112;Positioning, Defense Impairment;Não aderente;Canais
+F1005.006;Account Manipulation: Change of Payment Details;FA0001, TA0112;Positioning, Defense Impairment;Parcialmente aderente;Canais
+F1005.007;Account Manipulation: Enable Account Features;FA0001, TA0112;Positioning, Defense Impairment;Aderente;Canais
+F1005.008;Account Manipulation: Update Call Receiving Device;FA0001, TA0112;Positioning, Defense Impairment;Parcialmente aderente;Canais
+F1006;Account Takeover;TA0001;Initial Access;Aderente;Canais
+F1006.001;Account Takeover: Exposed API Key;TA0001;Initial Access;Parcialmente aderente;Canais
+F1006.002;Account Takeover: Exposed Login Credential;TA0001;Initial Access;Aderente;Canais
+F1006.003;Account Takeover: Password Reset;TA0001;Initial Access;Aderente;Canais
+F1007;Adversary-in-the-Browser;TA0001, FA0001, TA0002;Initial Access, Positioning, Execution;Aderente;"Canais
+Cartões"
+F1007.001;Adversary-in-the-Browser: DLL Injection;TA0001, FA0001, TA0002;Initial Access, Positioning, Execution;Aderente;Canais
+F1007.002;Adversary-in-the-Browser: Malicious Browser Extension;TA0001, FA0001, TA0002;Initial Access, Positioning, Execution;Aderente;"Canais
+Cartões"
+F1007.003;Adversary-in-the-Browser: Malicious JavaScript Injection;TA0001, FA0001, TA0002;Initial Access, Positioning, Execution;Aderente;"Canais
+Cartões"
+F1008;ATM Manipulation;TA0002;Execution;Aderente;Cartões
+F1008.001;ATM Manipulation: ATM Hardware Manipulation;TA0002;Execution;Aderente;Cartões
+F1008.002;ATM Manipulation: ATM Software Manipulation;TA0002;Execution;Aderente;Cartões
+F1009;Bank Deposit;TA0002, FA0001;Execution, Positioning;Não aderente;Uso Ilicito
+F1009.001;Bank Deposit: ATM Deposit;TA0002, FA0001;Execution, Positioning;Não aderente;Uso Ilicito
+F1009.002;Bank Deposit: Mobile Deposit;TA0002, FA0001;Execution, Positioning;Não aderente;Uso Ilicito
+F1009.003;Bank Deposit: Night Deposit;TA0002, FA0001;Execution, Positioning;Não aderente;Uso Ilicito
+F1009.004;Bank Deposit: Test Deposit;TA0002, FA0001;Execution, Positioning;Não aderente;Uso Ilicito
+F1010;Buy Money Order;FA0002;Monetization;Não aderente;Uso Ilicito
+F1011;Card Dump Capture;FA0001, TA0043;Positioning, Reconnaissance;Aderente;Cartões
+F1012;Card Testing;FA0001;Positioning;Aderente;Cartões
+F1013;Change Payroll Details;FA0001;Positioning;Não aderente;Canais
+F1014;Check Fraud;TA0002;Execution;Parcialmente aderente;Canais
+F1015;Churning;TA0002;Execution;Aderente;Cartões
+F1016;Compromise Payment Gateway;TA0001;Initial Access;Não aderente;Cartões
+F1017;Conversion to Physical Monetary Instruments;FA0002;Monetization;Não aderente;Cartões
+F1017.001;Conversion to Physical Monetary Instruments: Cash;FA0002;Monetization;Não aderente;Cartões
+F1017.002;Conversion to Physical Monetary Instruments: Cashier's Check;FA0002;Monetization;Não aderente;Canais
+F1017.003;Conversion to Physical Monetary Instruments: Money Order;FA0002;Monetization;Não aderente;Canais
+F1018;Convert to Cryptocurrency;FA0002;Monetization;Não aderente;Canais
+F1019;Create Counterfeit Card;TA0042;Resource Development;Não aderente;Cartões
+F1020;Create Fake Materials;TA0042;Resource Development;Não aderente;Cartões, Canais e Onboarding
+F1020.001;Create Fake Materials: Fake Documents;TA0042;Resource Development;Aderente;Onboarding
+F1020.002;Create Fake Materials: Fake Website;TA0042;Resource Development;Aderente;"Canais
+Cartões"
+F1021;Create Fraudulent Merchant Account;TA0042;Resource Development;Aderente;Cartões
+F1022;Delete Relevant Emails;TA0005;Stealth;Não aplicável;-
+F1023;Device Fingerprint Spoofing;TA0005;Stealth;Aderente;Canais
+F1024;Dispute Legitimate Transaction;TA0002;Execution;Parcialmente aderente;"Canais
+Cartões"
+F1025;Electronic Funds Transfer;FA0002;Monetization;Parcialmente aderente;Canais
+F1025.001;Electronic Funds Transfer: Peer-to-Peer Transfer;FA0002;Monetization;Parcialmente aderente;Canais
+F1025.002;Electronic Funds Transfer: Regional Payment Rail;FA0002;Monetization;Não aderente;Canais
+F1025.003;Electronic Funds Transfer: Wire Transfer;FA0002;Monetization;Parcialmente aderente;Canais
+F1026;Exploitation of Gambling Platforms;FA0002;Monetization;Não aderente;Canais
+F1027;Falsify Business Documents;TA0042;Resource Development;Aderente;Onboarding
+F1028;Fradulent Purchasing;TA0002, FA0002;Execution, Monetization;Aderente;Cartões
+F1029;Gather Customer Information;TA0043;Reconnaissance;Não aderente;"Canais
+Cartões"
+F1030;Geolocation Spoofing;TA0005;Stealth;Parcialmente aderente;Canais
+F1031;Impersonate Account Holder;TA0001, TA0005;Initial Access, Stealth;Aderente;"Canais
+Cartões"
+F1032;Impersonate Official;TA0001, TA0005;Initial Access, Stealth;Parcialmente aderente;"Canais
+Cartões"
+F1033;Insider Access Abuse;TA0001;Initial Access;;Compliance
+F1034;Interactive Voice Response Mapping;TA0043;Reconnaissance;Não aplicável;-
+F1035;Mail Theft;FA0001, TA0043;Positioning, Reconnaissance;Não aderente;Cartões
+F1036;New Vendor Setup;FA0001, TA0005;Positioning, Stealth;Parcialmente aderente;"Canais
+Cartões"
+F1037;NFC Payment;TA0002;Execution;Aderente;"Canais
+Cartões"
+F1038;PAN/CVV Generation;TA0042;Resource Development;Não aderente;Cartões
+F1039;PaReq Manipulation;TA0005;Stealth;Não aplicável;Cartões
+F1040;Phone Number Spoofing;TA0005, TA0043, TA0001;Stealth, Reconnaissance, Initial Access;Parcialmente aderente;"Canais
+Cartões"
+F1040.001;Phone Number Spoofing: Customer Phone Number Spoofing;TA0005, TA0043, TA0001;Stealth, Reconnaissance, Initial Access;Parcialmente aderente;"Canais
+Cartões"
+F1040.002;Phone Number Spoofing: Official Phone Number Spoofing;TA0005, TA0043, TA0001;Stealth, Reconnaissance, Initial Access;Parcialmente aderente;"Canais
+Cartões"
+F1041;PIN-code Peeking;TA0001, TA0043;Initial Access, Reconnaissance;Aderente;Cartões
+F1042;Reactivate Account;FA0001, TA0001;Positioning, Initial Access;Não aderente;"Canais
+Compliance"
+F1043;Reversal of Transaction;TA0002;Execution;Não aderente;"Canais
+Cartões"
+F1044;Scheduled Transfer;TA0002;Execution;Aderente;Canais
+F1045;Structuring;TA0005;Stealth;Parcialmente aderente;Canais
+F1046;Test Payment Thresholds;FA0001;Positioning;Parcialmente aderente;"Canais
+Cartões"
+F1047;Transfer of funds;FA0002;Monetization;Aderente;Canais
+F1048;Use Virtual Cards;TA0005;Stealth;Aderente;Cartões
+T1070;Indicator Removal;TA0005;Stealth;Parcialmente aderente;Canais
+T1110;Brute Force;TA0001;Initial Access;Parcialmente aderente;Canais
+T1110.001;Brute Force: Password Guessing;TA0001;Initial Access;Parcialmente aderente;Canais
+T1110.002;Brute Force: Password Cracking;TA0001;Initial Access;Não aderente;Canais
+T1110.003;Brute Force: Password Spraying;TA0001;Initial Access;Parcialmente aderente;Canais
+T1110.004;Brute Force:  Credential Stuffing;TA0001;Initial Access;Parcialmente aderente;Canais
+T1111;Multi-Factor Authentication Interception;TA0001;Initial Access;Parcialmente aderente;Canais
+T1113;Screen Capture;FA0001;Positioning;Parcialmente aderente;Canais
+T1185;Browser Session Hijacking;TA0001, FA0001;Initial Access, Positioning;Parcialmente aderente;Canais
+T1189;Drive-by Compromise;TA0001;Initial Access;Parcialmente aderente;Canais
+T1195;Supply Chain Compromise;TA0001;Initial Access;Parcialmente aderente;Canais
+T1219;Remote Access Tools;FA0001;Positioning;Aderente;Canais
+T1451;SIM Card Swap;TA0001;Initial Access;Parcialmente aderente;"Canais
+Cartões"
+T1453;Abuse Accessibility Features;FA0001;Positioning;Parcialmente aderente;Canais
+T1531;Account Access Removal;FA0001;Positioning;Não aderente;Canais
+T1539;Steal Web Session Cookie;FA0001, TA0001;Positioning, Initial Access;Parcialmente aderente;Canais
+T1550;Use Alternate Authentication Material;TA0001;Initial Access;Parcialmente aderente;Canais
+T1550.001;Use Alternate Authentication Material: Application Access Token;TA0001;Initial Access;Parcialmente aderente;Canais
+T1555;Credentials from Password Stores;TA0043;Reconnaissance;Aderente;Canais
+T1555.003;Credentials from Password Stores: Credentials from Web Browsers;TA0043;Reconnaissance;Aderente;Canais
+T1555.005;Credentials from Password Stores: Password Managers;TA0043;Reconnaissance;Aderente;Canais
+T1557;Adversary-in-the-Middle;TA0001, FA0001, TA0002;Initial Access, Positioning, Execution;Aderente;"Canais
+Cartões"
+T1583;Acquire Infrastructure;TA0042;Resource Development;Aderente;"Canais
+Cartões"
+T1583.001;Acquire Infrastructure: Domains;TA0042;Resource Development;Aderente;"Canais
+Cartões"
+T1583.003;Acquire Infrastructure: Virtual Private Network or Server;TA0042;Resource Development;Não aderente;"Canais
+Cartões"
+T1583.008;Acquire Infrastructure: Malvertising;TA0042;Resource Development;Não aderente;"Canais
+Cartões"
+T1585;Establish Accounts;TA0042;Resource Development;Não aderente;Uso Ilicito
+T1586;Compromise Accounts;TA0042;Resource Development;Aderente;Canais
+T1586.001;Compromise Accounts: Social Media Accounts;TA0042;Resource Development;Não aderente;Canais
+T1586.002;Compromise Accounts: Email Accounts;TA0042;Resource Development;Não aplicável;-
+T1586.003;Compromise Accounts: Cloud Accounts;TA0042;Resource Development;Não aplicável;-
+T1586.004;Compromise Accounts: Corporate Accounts;TA0042;Resource Development;Aderente;"Canais
+Compliance"
+T1593;Search Open Websites/Domains;TA0043;Reconnaissance;Não aderente;Canais
+T1593.001;Search Open Websites/Domains: Social Media;TA0043;Reconnaissance;Não aplicável;Canais
+T1593.002;Search Open Websites/Domains: Search Engines;TA0043;Reconnaissance;Aderente;Canais
+T1598;Phishing for Information;TA0043;Reconnaissance;Aderente;"Canais
+Cartões"
+T1608;Stage Capabilities;TA0042;Resource Development;Aderente;"Canais
+Cartões"
+T1608.006;Stage Capabilities: SEO Poisoning;TA0042;Resource Development;Aderente;"Canais
+Cartões"
+T1621;Multi-Factor Authentication Request Generation;TA0001;Initial Access;Não aplicável;Canais
+T1650;Acquire Access;TA0042;Resource Development;Não aderente;Canais
+T1660;Phishing;TA0001;Initial Access;Aderente;"Canais
+Cartões"
+T1667;Email Bombing;TA0112;Defense Impairment;Aderente;-
+T1672;Email Spoofing;TA0005;Stealth;Não aderente;Canais
