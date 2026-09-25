@@ -65,8 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('/api/adherence');
             const data = await response.json();
-            for (const [key, status] of Object.entries(data)) {
-                adherenceMap.set(key, status);
+            for (const [key, value] of Object.entries(data)) {
+                // Se a API antiga ainda retornar só string, a gente converte.
+                if (typeof value === 'string') {
+                    adherenceMap.set(key, { status: value, teams: '' });
+                } else {
+                    adherenceMap.set(key, value);
+                }
             }
         } catch (error) {
             console.error("Error fetching adherence:", error);
@@ -172,7 +177,8 @@ document.addEventListener('DOMContentLoaded', () => {
         tacticsList.forEach(tactic => {
             const filteredItems = tactic.items.filter(item => {
                 const key = `${tactic.id}_${item.technique_id}`;
-                const status = adherenceMap.get(key) || 'nao_avaliado';
+                const adData = adherenceMap.get(key) || {};
+                const status = adData.status || 'nao_avaliado';
                 return currentStatusFilter === 'todos' || status === currentStatusFilter;
             });
 
@@ -207,7 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const key = `${tactic.id}_${item.technique_id}`;
-                const status = adherenceMap.get(key) || 'nao_avaliado';
+                const adData = adherenceMap.get(key) || {};
+                const status = adData.status || 'nao_avaliado';
                 card.classList.add(`status-${status}`);
 
                 card.innerHTML = `
@@ -233,7 +240,15 @@ document.addEventListener('DOMContentLoaded', () => {
         detailTactic.textContent = tactic.name || 'Desconhecido';
         
         const key = `${tactic.id}_${item.technique_id}`;
-        detailAdherence.value = adherenceMap.get(key) || 'nao_avaliado';
+        const adData = adherenceMap.get(key) || {};
+        detailAdherence.value = adData.status || 'nao_avaliado';
+        
+        const teamsStr = adData.teams || '';
+        const selectedTeams = teamsStr.split(',').filter(Boolean);
+        document.querySelectorAll('#detail-teams input[type="checkbox"]').forEach(cb => {
+            cb.checked = selectedTeams.includes(cb.value);
+        });
+        
         adherenceFeedback.textContent = '';
         
         detailDescription.textContent = item.description || 'Nenhuma descrição fornecida.';
@@ -288,9 +303,11 @@ document.addEventListener('DOMContentLoaded', () => {
     closePanelBtn.addEventListener('click', closePanel);
     panelOverlay.addEventListener('click', closePanel);
 
-    detailAdherence.addEventListener('change', async (e) => {
+    async function saveAdherenceData() {
         if (!currentDetailItem || !currentDetailTactic) return;
-        const newStatus = e.target.value;
+        const newStatus = detailAdherence.value;
+        const selectedTeams = Array.from(document.querySelectorAll('#detail-teams input[type="checkbox"]:checked')).map(cb => cb.value).join(',');
+        
         const techId = currentDetailItem.technique_id;
         const tacticId = currentDetailTactic.id;
         const key = `${tacticId}_${techId}`;
@@ -302,11 +319,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/adherence', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tactic_id: tacticId, technique_id: techId, status: newStatus })
+                body: JSON.stringify({ tactic_id: tacticId, technique_id: techId, status: newStatus, teams: selectedTeams })
             });
 
             if (response.ok) {
-                adherenceMap.set(key, newStatus);
+                adherenceMap.set(key, { status: newStatus, teams: selectedTeams });
                 adherenceFeedback.textContent = 'Salvo!';
                 adherenceFeedback.style.color = 'green';
                 renderMatrix(); // update colors and potentially filter
@@ -320,6 +337,11 @@ document.addEventListener('DOMContentLoaded', () => {
             adherenceFeedback.textContent = 'Erro de conexão';
             adherenceFeedback.style.color = 'red';
         }
+    }
+
+    detailAdherence.addEventListener('change', saveAdherenceData);
+    document.querySelectorAll('#detail-teams input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', saveAdherenceData);
     });
 
     statusFilter.addEventListener('change', (e) => {

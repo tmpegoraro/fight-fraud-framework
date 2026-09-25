@@ -27,10 +27,13 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 tactic_id TEXT NOT NULL,
                 technique_id TEXT NOT NULL,
                 status TEXT NOT NULL,
+                teams TEXT,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (tactic_id, technique_id)
             )
         `);
+        // Adiciona a coluna teams se não existir (para atualizar tabelas existentes sem erro)
+        db.run("ALTER TABLE adherence_v2 ADD COLUMN teams TEXT", () => {});
 
         db.run(`
             CREATE TABLE IF NOT EXISTS translations (
@@ -44,7 +47,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 // Endpoint GET: Retorna todas as aderências
 app.get('/api/adherence', (req, res) => {
-    const sql = `SELECT tactic_id, technique_id, status FROM adherence_v2`;
+    const sql = `SELECT tactic_id, technique_id, status, teams FROM adherence_v2`;
     db.all(sql, [], (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
@@ -55,7 +58,10 @@ app.get('/api/adherence', (req, res) => {
         const result = {};
         rows.forEach(row => {
             const key = `${row.tactic_id}_${row.technique_id}`;
-            result[key] = row.status;
+            result[key] = {
+                status: row.status,
+                teams: row.teams || ""
+            };
         });
         
         res.json(result);
@@ -64,26 +70,28 @@ app.get('/api/adherence', (req, res) => {
 
 // Endpoint POST: Atualiza ou insere o status de uma técnica
 app.post('/api/adherence', (req, res) => {
-    const { tactic_id, technique_id, status } = req.body;
+    const { tactic_id, technique_id, status, teams } = req.body;
     
     if (!tactic_id || !technique_id || !status) {
         return res.status(400).json({ error: 'tactic_id, technique_id e status são obrigatórios' });
     }
 
+    const teamsValue = teams || "";
+
     // Usamos INSERT ... ON CONFLICT REPLACE
     const sql = `
-        INSERT INTO adherence_v2 (tactic_id, technique_id, status, updated_at) 
-        VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+        INSERT INTO adherence_v2 (tactic_id, technique_id, status, teams, updated_at) 
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
         ON CONFLICT(tactic_id, technique_id) 
-        DO UPDATE SET status=excluded.status, updated_at=CURRENT_TIMESTAMP
+        DO UPDATE SET status=excluded.status, teams=excluded.teams, updated_at=CURRENT_TIMESTAMP
     `;
     
-    db.run(sql, [tactic_id, technique_id, status], function(err) {
+    db.run(sql, [tactic_id, technique_id, status, teamsValue], function(err) {
         if (err) {
             res.status(500).json({ error: err.message });
             return;
         }
-        res.json({ message: 'Status atualizado com sucesso!', tactic_id, technique_id, status });
+        res.json({ message: 'Status atualizado com sucesso!', tactic_id, technique_id, status, teams: teamsValue });
     });
 });
 
